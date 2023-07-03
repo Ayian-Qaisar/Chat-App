@@ -1,0 +1,639 @@
+<!-- Loopple Templates: https://www.loopple.com/templates | Copyright Loopple (https://www.loopple.com) | This copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <title>Chat Page Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+  />
+  <link
+    rel="stylesheet"
+    href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css"
+  />
+  <link rel="stylesheet" href="./assets/css/theme.css" />
+  <link rel="stylesheet" href="./assets/css/loopple/loopple.css" />
+</head>
+
+<style>
+  #chat-page {
+    display: none;
+  }
+  #chat-screen {
+    text-align: center;
+  }
+  .message {
+    display: flex;
+    padding: 10px;
+  }
+  .message > p {
+    max-width: 80%;
+    background: #fff;
+    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.05);
+    padding: 5px;
+  }
+  .overflow {
+    overflow: auto;
+  }
+  .my-message {
+    justify-content: flex-end;
+  }
+  .other-message {
+    justify-content: flex-start;
+  }
+  .name {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  .nav-link {
+    cursor: pointer;
+  }
+  #send-message {
+    cursor: pointer;
+  }
+  #login-page {
+    padding: 20px;
+  }
+  #login-page input {
+    margin-bottom: 20px;
+    border: 1.2px solid rgb(168, 168, 168);
+    border-radius: 2px;
+  }
+  #login-page button {
+    margin-top: 10px;
+    /* border-radius: 20px; */
+    width: 20%;
+    border: none;
+    padding: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  #login-page button:hover {
+    background-color: #445ce2;
+  }
+  #main-sign-in {
+    border: none;
+  }
+</style>
+
+<body>
+  <nav
+    class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white loopple-fixed-start"
+    id="sidenav-main"
+  >
+    <nav
+      class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white"
+      id="sidenav-main"
+    >
+      <div class="sidenav-header align-items-center">
+        <a class="navbar-brand" href="javascript:void(0)">
+          <img src="logo png.png" class="navbar-brand-img" alt="..." />
+          <span>Chat Room</span>
+        </a>
+      </div>
+      <hr class="mt-0 mb-3" />
+      <div class="d-flex align-items-center">
+        <img
+          src="data:image/png;base64,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"
+          class="avatar ml-3"
+        />
+        <div class="ml-3">
+          <h4 class="mb-0" id="newName1">Name</h4>
+          <p class="text-xs mb-0" id="newRoomNo">Room No :</p>
+        </div>
+      </div>
+      <hr class="mt-3 mb-0" />
+      <div class="navbar-inner">
+        <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="javascript:">
+                <i class="fa fa-desktop text-primary"></i>
+                <span class="nav-link-text" id="joinRoomBtn"
+                  >Join New Room</span
+                >
+              </a>
+            </li>
+            <li class="nav-item">
+              <a id="exit-chat" class="nav-link" href="index.html">
+                <i class="fa fa-key text-success"></i>
+                <span class="nav-link-text">Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </nav>
+  <div class="main-content" id="panel">
+    <nav
+      class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom"
+      id="navbarTop"
+    >
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <h1 class="text-light text-uppercase d-none d-sm-none d-md-block">
+            Chat Room
+          </h1>
+          <ul class="navbar-nav align-items-center ml-md-auto">
+            <li class="nav-item d-xl-none">
+              <div
+                class="pr-3 sidenav-toggler sidenav-toggler-dark active"
+                data-action="sidenav-pin"
+                data-target="#sidenav-main"
+              >
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item d-sm-none">
+              <a
+                class="nav-link"
+                href="#"
+                data-action="search-show"
+                data-target="#navbar-search-main"
+              >
+                <i class="ni ni-zoom-split-in"></i>
+              </a>
+            </li>
+            <li>
+              <a href="index.html">
+                <button
+                  id="main-sign-in"
+                  class="btn-link text-white bg-transparent"
+                >
+                  Switch Account
+                </button>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <img
+                  alt="flag"
+                  src="https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/icons/flags/US.png"
+                />
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-right py-0 overflow-hidden"
+              >
+                <div class="px-3 pt-3">
+                  <h6 class="text-sm text-muted m-0">Select Language</h6>
+                </div>
+                <div class="list-group list-group-flush">
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <img
+                          alt="flag"
+                          src="https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/icons/flags/US.png"
+                        />
+                      </div>
+                      <div class="col ml--2">
+                        <div
+                          class="d-flex justify-content-between align-items-center"
+                        >
+                          <div>
+                            <h4 class="mb-0 text-sm">English</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row align-items-center mt-3">
+                      <div class="col-auto">
+                        <img
+                          alt="flag"
+                          src="https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/icons/flags/DE.png"
+                        />
+                      </div>
+                      <div class="col ml--2">
+                        <div
+                          class="d-flex justify-content-between align-items-center"
+                        >
+                          <div>
+                            <h4 class="mb-0 text-sm">Germany</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fa fa-layer-group"></i>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default dropdown-menu-right"
+              >
+                <div class="row shortcuts px-4">
+                  <a href="#!" class="col-4 shortcut-item text-center">
+                    <span
+                      class="shortcut-media avatar rounded-circle bg-gradient-red"
+                    >
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                    <small class="text-white">Calendar</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item text-center">
+                    <span
+                      class="shortcut-media avatar rounded-circle bg-gradient-orange"
+                    >
+                      <i class="fa fa-envelope"></i>
+                    </span>
+                    <small class="text-white">Email</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item text-center">
+                    <span
+                      class="shortcut-media avatar rounded-circle bg-gradient-info"
+                    >
+                      <i class="fa fa-credit-card"></i>
+                    </span>
+                    <small class="text-white">Payments</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item text-center">
+                    <span
+                      class="shortcut-media avatar rounded-circle bg-gradient-green"
+                    >
+                      <i class="fa fa-book"></i>
+                    </span>
+                    <small class="text-white">Reports</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item text-center">
+                    <span
+                      class="shortcut-media avatar rounded-circle bg-gradient-purple"
+                    >
+                      <i class="fa fa-map"></i>
+                    </span>
+                    <small class="text-white">Maps</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item text-center">
+                    <span
+                      class="shortcut-media avatar rounded-circle bg-gradient-yellow"
+                    >
+                      <i class="fa fa-store"></i>
+                    </span>
+                    <small class="text-white">Shop</small>
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link position-relative"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fa fa-bell"></i>
+                <span
+                  class="badge badge-danger badge-sm position-absolute top-0 mt-n2 right-1 px-2 py-1"
+                  >3</span
+                >
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-right dropdown-menu-xl py-0 overflow-hidden"
+              >
+                <div class="px-3 pt-3">
+                  <h6 class="text-sm text-muted m-0">
+                    You have <span class="text-primary">3</span> new
+                    notifications!
+                  </h6>
+                </div>
+                <div class="list-group list-group-flush">
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img
+                          alt="Image placeholder"
+                          src="data:image/png;base64,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"
+                          class="avatar rounded-circle"
+                        />
+                      </div>
+                      <div class="col ml--2">
+                        <div
+                          class="d-flex justify-content-between align-items-center"
+                        >
+                          <div>
+                            <h4 class="mb-0 text-sm">John Snow</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">
+                          Let's meet at Starbucks at 11:30. Wdyt?
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img
+                          alt="Image placeholder"
+                          src="https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-2.jpg"
+                          class="avatar rounded-circle"
+                        />
+                      </div>
+                      <div class="col ml--2">
+                        <div
+                          class="d-flex justify-content-between align-items-center"
+                        >
+                          <div>
+                            <h4 class="mb-0 text-sm">Alexa Mira</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>3 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">
+                          Did you have time to read my E-mail?
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img
+                          alt="Image placeholder"
+                          src="https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-3.jpg"
+                          class="avatar rounded-circle"
+                        />
+                      </div>
+                      <div class="col ml--2">
+                        <div
+                          class="d-flex justify-content-between align-items-center"
+                        >
+                          <div>
+                            <h4 class="mb-0 text-sm">Rala Micharel</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>4 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">
+                          Just saw your referring program. Can you please give
+                          me more details?
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <ul class="navbar-nav align-items-center ml-auto ml-md-0">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link pr-0"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <div class="media align-items-center">
+                  <span class="avatar avatar-sm">
+                    <img
+                      alt="Image placeholder"
+                      src="data:image/png;base64,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"
+                    />
+                  </span>
+                </div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-header noti-title">
+                  <h6 class="text-overflow m-0">Welcome!</h6>
+                </div>
+                <a href="#!" class="dropdown-item">
+                  <i class="fa fa-user"></i>
+                  <span>My profile</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                  <i class="fa fa-tools"></i>
+                  <span>Settings</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                  <i class="far fa-calendar"></i>
+                  <span>Activity</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                  <i class="fa fa-phone"></i>
+                  <span>Support</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="dropLogout" href="index.html">
+                  <i class="fa fa-sign-out-alt"></i>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid pt-3">
+      <div class="row removable">
+        <div class="col-lg-12 px-sm-0">
+          <div class="card shadow-none px-0 bg-transparent mt-0 mb-4">
+            <div class="card-body px-0 pb-0">
+              <div class="px-0 pb-4">
+                <div class="row flex-row">
+                  <div class="col-lg-9">
+                    <div
+                      id="chat-page"
+                      class="card max-height-vh-70 overflow"
+                      style="max-height: 70vh"
+                    >
+                      <div class="card-header shadow-xl">
+                        <div class="row">
+                          <div class="col-md-10">
+                            <div class="d-flex align-items-center">
+                              <div class="ms-3">
+                                <h3 class="mb-0 d-block">Chat</h3>
+                                <span class="text-sm text-muted">room</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        id="chat-screen"
+                        class="card-body overflow-auto overflow-x-hidden"
+                      ></div>
+                      <div class="card-footer d-block">
+                        <form class="align-items-center">
+                          <div class="input-group mb-3">
+                            <input
+                              id="message-input"
+                              type="text"
+                              placeholder="Search"
+                              class="form-control"
+                            />
+                            <div class="input-group-append">
+                              <span class="input-group-text" id="send-message">
+                                <i class="fa fa-paper-plane"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div
+                      id="login-page"
+                      class="card max-height-vh-70"
+                      style="max-height: 70vh"
+                    >
+                      <!-- <label for="userName">User Name</label>
+                      <input type="text" id="userName" /> -->
+                      <label for="roomNo">Room Id.</label>
+                      <input type="text" id="roomNo" />
+                      <!-- <label for="email">Email</label>
+                      <input type="text" id="email" /> -->
+                      <!-- <label for="phone">Phone</label>
+                      <input type="text" id="phone" /> -->
+
+                      <button class="submitBtn btn-primary">Join</button>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div
+                      class="card max-height-vh-70 h-100 overflow-auto overflow-x-hidden mb-5 mb-lg-0"
+                      style="max-height: 70vh"
+                    >
+                      <div class="card-body p-2">
+                        <a href="javascript:;" class="d-block p-2"> </a>
+                        <div class="p-2 text-center">
+                          <a href="javascript:;" class="d-block p-2">
+                            <img
+                              alt="Image"
+                              src="data:image/png;base64,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"
+                              class="avatar avatar-lg shadow mb-0"
+                            />
+                          </a>
+                          <div class="ml-2 mt-0 mb-0 text-center">
+                            <div
+                              class="justify-content-between align-items-center"
+                            >
+                              <h3 class="mb-0 mt-1" id="newName2">Name</h3>
+                              <p
+                                class="mb-0 text-sm text-dark font-weight-normal"
+                                id="newRoomNo2"
+                              >
+                                Room No:
+                              </p>
+                              <a href="" class="text-sm">View profile</a>
+                            </div>
+                          </div>
+                        </div>
+                        <hr class="my-3" />
+                        <hr class="my-3" />
+                        <div class="mx-3">
+                          <div class="d-flex align-items-center mb-3">
+                            <i class="fa fa-envelope opacity-7"></i>
+                            <div class="ml-3">
+                              <h5 class="mb-0">Email</h5>
+                              <span class="text-sm text-primary" id="newName3"
+                                >user@user.com
+                              </span>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <i class="fa fa-birthday-cake opacity-7"></i>
+                            <div class="ml-3">
+                              <h5 class="mb-0">Birthday</h5>
+                              <span class="text-sm text-primary" id="phone1"
+                                >0723922012
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer pt-0 px-4">
+      <div class="row align-items-center justify-content-lg-between">
+        <div class="col-lg-6">
+          <div class="copyright text-center text-lg-left text-muted">
+            <a
+              href="https://www.creative-tim.com/product/argon-dashboard"
+              class="font-weight-bold ml-1"
+              target="_blank"
+              >Dashboard</a
+            >
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <ul
+            class="nav nav-footer justify-content-center justify-content-lg-end"
+          >
+            <li class="nav-item">
+              <a href="javascript:void(0);" class="nav-link">About us</a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:;" class="nav-link">Company</a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:;" class="nav-link">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:;" class="nav-link">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script src="code.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/jquery.min.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/bootstrap.bundle.min.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/js.cookie.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/chart.extension.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
+</body>
