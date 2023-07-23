@@ -6,7 +6,6 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
 app.use(express.static(path.join("../frontend")));
-
 const rooms = new Map(); // Map to store the rooms and their respective sockets
 const chatHistory = new Map(); // Map to store the chat history of each room
 const users = {};
